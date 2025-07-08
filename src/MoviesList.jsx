@@ -36,7 +36,7 @@ const MoviesList = () => {
        `https://api.themoviedb.org/3/movie/${movieId}`,
        {
          params: {
-           api_key: '',
+           api_key: '76d81577aa6aa91272070860155850bd',
            language: 'en-US',
            append_to_response: 'credits,videos',
          },
@@ -47,14 +47,14 @@ const MoviesList = () => {
    } catch (error) {
      console.log(error.message)
    }
-
-   const closeDetails = () => {
-     setSelectedMovie(null)
-   }
-
-   if (loading && !selectedMovie) return <div>Loading movies...</div>
-   if (error) return <div>Error: {error}</div>
  }
+ const closeDetails = () => {
+   setSelectedMovie(null)
+ }
+
+ if (loading && !selectedMovie) return <div>Loading movies...</div>
+ if (error) return <div>Error: {error}</div>
+
  return (
    <div className='movie-app'>
      {!selectedMovie ? (
@@ -82,7 +82,19 @@ const MoviesList = () => {
          </div>
        </>
      ) : (
-       <div className='movie-detail'></div>
+       <div className='movie-details'>
+         <button onClick={closeDetails} className='back-button'>
+           &larr; Back to List
+         </button>
+         <div className='movie-header'>
+           {selectedMovie.poster_path && (
+             <img
+               src={`https://image.tmdb.org/t/p/w300${selectedMovie.poster_path}`}
+               alt={selectedMovie.title}
+             />
+           )}
+         </div>
+       </div>
      )}
    </div>
  )
