@@ -8,70 +8,84 @@ const MoviesList = () => {
  const [error, setError] = useState(null)
  
  useEffect(() => {
-  const fetchMovies = async () => {
-   try{
-    const response = await axios.get(
-     'https://api.themoviedb.org/3/movie/popular', {
-      params: {
-      api_key:'76d81577aa6aa91272070860155850bd',
-      language: 'en-US',
-      page:1
-      }
+   const fetchMovies = async () => {
+     try {
+       const response = await axios.get(
+         'https://api.themoviedb.org/3/movie/popular',
+         {
+           params: {
+             api_key: '76d81577aa6aa91272070860155850bd',
+             language: 'en-US',
+             page: 1,
+           },
+         }
+       )
+       setMovies(response.data.results.slice(0, 10))
+       setLoading(false)
+     } catch (error) {
+       console.log(error.message)
+       setLoading(false)
      }
-    )
-    setMovies(response.data.results.slice(0,10));
-    setLoading(false)
-    console.log(response.data.results.slice(0, 10))
-    
-   }catch(error) {
-    console.log(error.message)
-    setLoading(false);
    }
-  }
-  fetchMovies()
+   fetchMovies()
  }, [])
 
  const fetchMovieDetails = async (movieId) => {
-  try{
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/${movieId}`, 
-      {
-        params: {
-          api_key: '',
-          language: 'en-US',
-          append_to_response: 'credits,videos',
-        },
-      }
-    )
-    setSelectedMovie(response.data)
-    setLoading(false)
-  }catch(error) {
-    console.log(error.message);
-  }
+   try {
+     const response = await axios.get(
+       `https://api.themoviedb.org/3/movie/${movieId}`,
+       {
+         params: {
+           api_key: '',
+           language: 'en-US',
+           append_to_response: 'credits,videos',
+         },
+       }
+     )
+     setSelectedMovie(response.data)
+     setLoading(false)
+   } catch (error) {
+     console.log(error.message)
+   }
 
-  const closeDetails = () => {
-    setSelectedMovie(null)
-  }
+   const closeDetails = () => {
+     setSelectedMovie(null)
+   }
 
-  if(loading && !selectedMovie) return <div>Loading movies...</div>
-  if(error) return <div>Error: {error}</div>
+   if (loading && !selectedMovie) return <div>Loading movies...</div>
+   if (error) return <div>Error: {error}</div>
  }
-  return (
-    <div className='movie-app'>
-      {!selectedMovie ? (
-        <>
-          <h2>Popular Movies</h2>
-          <div className="movie-grid">
-            
-          </div>
-        </>
-      ):(
-        <div className="movie-detail">
-
-        </div>
-      )}
-    </div>
-  )
+ return (
+   <div className='movie-app'>
+     {!selectedMovie ? (
+       <>
+         <h2>Popular Movies</h2>
+         <div className='movie-grid'>
+           {movies.map((movie) => {
+             return (
+               <div
+                 key={movie.id}
+                 className='movie-card'
+                 onClick={() => fetchMovieDetails(movie.id)}
+               >
+                 {movie.poster_path && (
+                   <img
+                     src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                     alt={movie.title}
+                   />
+                 )}
+                 <h3>{movie.title}</h3>
+                 <p>Rating: {movie.vote_average}/10</p>
+               </div>
+             )
+           })}
+         </div>
+       </>
+     ) : (
+       <div className='movie-detail'></div>
+     )}
+   </div>
+ )
 }
 
 export default MoviesList
