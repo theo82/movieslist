@@ -93,6 +93,23 @@ const MoviesList = () => {
                alt={selectedMovie.title}
              />
            )}
+           <div className='detail-info'>
+             <h2>
+               {selectedMovie.title} (
+               {new Date(selectedMovie.release_date).getFullYear()})
+             </h2>
+             <p>
+               <strong>Rating:</strong> {selectedMovie.vote_average}/10 (
+               {selectedMovie.vote_count} votes)
+             </p>
+             <p>
+               <strong>Runtime:</strong> {selectedMovie.runtime} minutes
+             </p>
+             <p>
+               <strong>Genres:</strong>{' '}
+               {selectedMovie.genres?.map((g) => g.name).join(', ')}
+             </p>
+           </div>
          </div>
        </div>
      )}
