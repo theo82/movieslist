@@ -137,6 +137,23 @@ const MoviesList = () => {
          </div>
        </div>
      )}
+
+     {selectedMovie.videos?.results?.length > 0 && (
+       <>
+         <h3>Trailer</h3>
+         <div className='video-container'>
+           <iframe
+             width='560'
+             height='315'
+             src={`https://www.youtube.com/embed/${selectedMovie.videos.results[0].key}`}
+             title={selectedMovie.title}
+             frameBorder='0'
+             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+             allowFullScreen
+           ></iframe>
+         </div>
+       </>
+     )}
    </div>
  )
 }
