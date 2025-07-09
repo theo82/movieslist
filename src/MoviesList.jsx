@@ -138,7 +138,7 @@ const MoviesList = () => {
        </div>
      )}
 
-     {selectedMovie.videos?.results?.length > 0 && (
+     {selectedMovie?.videos?.results?.[0]?.key && (
        <>
          <h3>Trailer</h3>
          <div className='video-container'>
