@@ -44,6 +44,7 @@ const MoviesList = () => {
      )
      setSelectedMovie(response.data)
      setLoading(false)
+     console.log(response.data)
    } catch (error) {
      console.log(error.message)
    }
@@ -110,6 +111,29 @@ const MoviesList = () => {
                {selectedMovie.genres?.map((g) => g.name).join(', ')}
              </p>
            </div>
+         </div>
+         <div className='detail-content'>
+           <h3>Overview</h3>
+           <p>{selectedMovie.overview}</p>
+           {selectedMovie.credits?.cast?.length > 0 && (
+             <>
+               <h3>Cast</h3>
+               <div className='cast-grid'>
+                 {selectedMovie.credits.cast.slice(0, 6).map((person) => (
+                   <div key={person.id} className='cast-member'>
+                     {person.profile_path && (
+                       <img
+                         src={`https://image.tmdb.org/t/p/w200${person.profile_path}`}
+                         alt={person.name}
+                       />
+                     )}
+                     <p>{person.name}</p>
+                     <p className='character'>{person.character}</p>
+                   </div>
+                 ))}
+               </div>
+             </>
+           )}
          </div>
        </div>
      )}
